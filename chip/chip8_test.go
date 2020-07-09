@@ -2,6 +2,7 @@ package chip
 
 import (
 	"github.com/stretchr/testify/assert"
+	"github.com/veandco/go-sdl2/sdl"
 	"testing"
 )
 
@@ -106,6 +107,49 @@ func TestNewChip8(t *testing.T) {
 	assert.True(t, triggered)
 	assert.Equal(t, uint8(0x12), randomUint)
 
+}
+
+//TODO this is pants
+func TestSetKeys(t *testing.T) {
+	c := Chip8{}
+
+	c.SetKey(sdl.K_0, true)
+	c.SetKey(sdl.K_1, true)
+	c.SetKey(sdl.K_2, true)
+	c.SetKey(sdl.K_3, true)
+	c.SetKey(sdl.K_4, true)
+	c.SetKey(sdl.K_5, true)
+	c.SetKey(sdl.K_6, true)
+	c.SetKey(sdl.K_7, true)
+	c.SetKey(sdl.K_8, true)
+	c.SetKey(sdl.K_9, true)
+	c.SetKey(sdl.K_a, true)
+	c.SetKey(sdl.K_b, true)
+	c.SetKey(sdl.K_c, true)
+	c.SetKey(sdl.K_d, true)
+	c.SetKey(sdl.K_e, true)
+	c.SetKey(sdl.K_f, true)
+
+	assert.Equal(t, uint8(0x1), c.Keypad[0x0])
+	assert.Equal(t, uint8(0x1), c.Keypad[0x1])
+	assert.Equal(t, uint8(0x1), c.Keypad[0x2])
+	assert.Equal(t, uint8(0x1), c.Keypad[0x3])
+	assert.Equal(t, uint8(0x1), c.Keypad[0x4])
+	assert.Equal(t, uint8(0x1), c.Keypad[0x5])
+	assert.Equal(t, uint8(0x1), c.Keypad[0x6])
+	assert.Equal(t, uint8(0x1), c.Keypad[0x7])
+	assert.Equal(t, uint8(0x1), c.Keypad[0x8])
+	assert.Equal(t, uint8(0x1), c.Keypad[0x9])
+	assert.Equal(t, uint8(0x1), c.Keypad[0xa])
+	assert.Equal(t, uint8(0x1), c.Keypad[0xb])
+	assert.Equal(t, uint8(0x1), c.Keypad[0xc])
+	assert.Equal(t, uint8(0x1), c.Keypad[0xd])
+	assert.Equal(t, uint8(0x1), c.Keypad[0xe])
+	assert.Equal(t, uint8(0x1), c.Keypad[0xf])
+
+	c.SetKey(sdl.K_b, false)
+
+	assert.Equal(t, uint8(0x0), c.Keypad[0xb])
 }
 
 //TODO: Test Initialise

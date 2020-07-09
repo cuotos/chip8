@@ -75,7 +75,9 @@ func (s *SDLGraphics) Draw() {
 }
 
 func (s *SDLGraphics) Clear() {
-	s.Renderer.Clear()
+	for i, _ := range s.gfxMem{
+		s.gfxMem[i] = 0x0
+	}
 }
 
 func (s *SDLGraphics) Cleanup(){

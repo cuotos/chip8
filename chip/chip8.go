@@ -1,8 +1,8 @@
 package chip
 
 import (
-	"fmt"
 	"github.com/cuotos/chip8/gfx"
+	"github.com/veandco/go-sdl2/sdl"
 	"math/rand"
 	"os"
 )
@@ -97,7 +97,7 @@ func (c *Chip8) EmulateCycle() error {
 
 	// Fetch opcode
 	c.OpCode = uint16(c.Memory[c.PC])<<8 | uint16(c.Memory[c.PC+1])
-	fmt.Printf("oc:%04x pc:%x I:%02x\n", c.OpCode, c.PC, c.I)
+
 	err := c.HandleOpcode()
 	if err != nil {
 		return err
@@ -106,4 +106,50 @@ func (c *Chip8) EmulateCycle() error {
 	return nil
 }
 
-func (c *Chip8) SetKeys(){}
+func (c *Chip8) SetKey(key sdl.Keycode, pressed bool){
+
+	var k uint8
+
+	switch key {
+	case sdl.K_1:
+		k = 0x1
+	case sdl.K_2:
+		k = 0x2
+	case sdl.K_3:
+		k = 0x3
+	case sdl.K_4:
+		k = 0xc
+	case sdl.K_q:
+		k = 0x4
+	case sdl.K_w:
+		k = 0x5
+	case sdl.K_e:
+		k = 0x6
+	case sdl.K_r:
+		k = 0xd
+	case sdl.K_a:
+		k = 0x7
+	case sdl.K_s:
+		k = 0x8
+	case sdl.K_d:
+		k = 0x9
+	case sdl.K_f:
+		k = 0xe
+	case sdl.K_z:
+		k = 0xa
+	case sdl.K_x:
+		k = 0x0
+	case sdl.K_c:
+		k = 0xb
+	case sdl.K_v:
+		k = 0xf
+	default:
+		return
+	}
+
+	if pressed {
+		c.Keypad[k] = uint8(0x1)
+	} else {
+		c.Keypad[k] = uint8(0x0)
+	}
+}

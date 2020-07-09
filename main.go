@@ -37,11 +37,11 @@ func main() {
 		log.Fatal(err)
 	}
 
-	clock := time.NewTicker(time.Second / time.Duration(500))
+	clock := time.NewTicker(time.Second / time.Duration(300))
 	timers := time.NewTicker(time.Second / time.Duration(60))
 	video := time.NewTicker(time.Second / time.Duration(60))
 
-	for processEvents() {
+	for processEvents(c) {
 		select {
 		case <-clock.C:
 			err := c.EmulateCycle()
@@ -70,15 +70,22 @@ func main() {
 	}
 }
 
-func processEvents() bool {
+func processEvents(c *chip.Chip8) bool {
 	for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
-		switch event.(type) {
+		switch e := event.(type) {
 		// switch case for when someone quits out of application
 		case *sdl.QuitEvent:
 			println("Quit") // not necessary
 			// decided with os.Exit since I was having issues when I just
 			//broke the game loop and window wasn't closing properly
 			os.Exit(0)
+		case *sdl.KeyboardEvent:
+			if e.Type == sdl.KEYUP {
+				c.SetKey(e.Keysym.Sym, false)
+			}
+			if e.Type == sdl.KEYDOWN {
+				c.SetKey(e.Keysym.Sym, true)
+			}
 		}
 	}
 
