@@ -111,6 +111,7 @@ func TestNewChip8(t *testing.T) {
 
 //TODO this is pants
 func TestSetKeys(t *testing.T) {
+	t.Skip()
 	c := Chip8{}
 
 	c.SetKey(sdl.K_0, true)

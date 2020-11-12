@@ -111,6 +111,8 @@ func (c *Chip8) SetKey(key sdl.Keycode, pressed bool){
 	var k uint8
 
 	switch key {
+	case sdl.K_0:
+		k = 0x0
 	case sdl.K_1:
 		k = 0x1
 	case sdl.K_2:
@@ -118,30 +120,28 @@ func (c *Chip8) SetKey(key sdl.Keycode, pressed bool){
 	case sdl.K_3:
 		k = 0x3
 	case sdl.K_4:
-		k = 0xc
-	case sdl.K_q:
 		k = 0x4
-	case sdl.K_w:
+	case sdl.K_5:
 		k = 0x5
-	case sdl.K_e:
+	case sdl.K_6:
 		k = 0x6
-	case sdl.K_r:
-		k = 0xd
-	case sdl.K_a:
+	case sdl.K_7:
 		k = 0x7
-	case sdl.K_s:
+	case sdl.K_8:
 		k = 0x8
-	case sdl.K_d:
+	case sdl.K_9:
 		k = 0x9
-	case sdl.K_f:
-		k = 0xe
-	case sdl.K_z:
+	case sdl.K_a:
 		k = 0xa
-	case sdl.K_x:
-		k = 0x0
-	case sdl.K_c:
+	case sdl.K_b:
 		k = 0xb
-	case sdl.K_v:
+	case sdl.K_c:
+		k = 0xc
+	case sdl.K_d:
+		k = 0xd
+	case sdl.K_e:
+		k = 0xe
+	case sdl.K_f:
 		k = 0xf
 	default:
 		return

@@ -222,7 +222,16 @@ var defaultOpcodes = opcodes{
 			c.V[c.OpCode&0x0f00>>8] = c.DelayTimer
 
 		case 0x0a:
-			panic("0x0a not implemented")
+			pressed := false
+			for i, k := range c.Keypad {
+				if k == 0x1 {
+					pressed = true
+					c.V[c.OpCode & 0x0f00 >> 8] = uint8(i)
+				}
+			}
+			if !pressed {
+				return
+			}
 
 		case 0x15:
 			c.DelayTimer = uint8(c.OpCode & 0x0f00 >> 8)
@@ -243,20 +252,19 @@ var defaultOpcodes = opcodes{
 			c.Memory[c.I+2] = (reg % 100) % 10
 
 		case 0x55:
-			numberOfRegs := c.OpCode & 0x0f00 >> 8
-			for i := 0; uint16(i) <= numberOfRegs; i++ {
-				c.Memory[c.I+uint16(i)] = c.V[i]
+			for i := 0; uint16(i) <= c.OpCode & 0x0f00 >> 8; i++ {
+				c.Memory[c.I] = c.V[i]
+				c.I++
 			}
 
 		case 0x65:
-			maxReg := c.OpCode & 0xf00 >> 8
-			for i := 0; i <= int(maxReg); i++ {
-				c.V[i] = c.Memory[c.I+uint16(i)]
+			for i := uint16(0); i <= (c.OpCode & 0xf00) >> 8; i++ {
+				c.V[i] = c.Memory[c.I+i]
+				//c.I++
 			}
 		}
 
 		c.PC += 2
-
 	},
 }
 

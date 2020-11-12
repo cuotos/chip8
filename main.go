@@ -37,11 +37,11 @@ func main() {
 		log.Fatal(err)
 	}
 
-	clock := time.NewTicker(time.Second / time.Duration(300))
+	clock := time.NewTicker(time.Second / time.Duration(500))
 	timers := time.NewTicker(time.Second / time.Duration(60))
 	video := time.NewTicker(time.Second / time.Duration(60))
 
-	for processEvents(c) {
+	for {
 		select {
 		case <-clock.C:
 			err := c.EmulateCycle()
@@ -67,6 +67,8 @@ func main() {
 				c.SoundTimer -= 1
 			}
 		}
+
+		processEvents(c)
 	}
 }
 
