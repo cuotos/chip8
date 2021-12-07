@@ -1,40 +1,50 @@
 package main
 
 import (
-	"github.com/cuotos/chip8/chip"
-	"github.com/cuotos/chip8/gfx"
-	"github.com/veandco/go-sdl2/sdl"
 	"log"
 	"math/rand"
 	"os"
 	"time"
+
+	"github.com/cuotos/chip8/chip"
+	"github.com/cuotos/chip8/gfx"
+	"github.com/hashicorp/logutils"
+	"github.com/veandco/go-sdl2/sdl"
 )
 
 // for stuck check
 var prevPC uint16
 
-func init(){
+func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 func main() {
+
+	filter := &logutils.LevelFilter{
+		Levels:   []logutils.LogLevel{"DEBUG", "INFO", "WARN", "ERROR"},
+		MinLevel: logutils.LogLevel("DEBUG"),
+		Writer:   os.Stderr,
+	}
+	log.SetFlags(log.Lshortfile | log.LstdFlags)
+	log.SetOutput(filter)
 
 	c := chip.NewDefaultChip()
 	// initialise the chip
 	c.Initialise()
 
-//	gfx := gfx.NewTerminalGFX() // TODO: this will be added to the NewChip at some point along with a logger and stuff
+	//	gfx := gfx.NewTerminalGFX() // TODO: this will be added to the NewChip at some point along with a logger and stuff
 
 	gfx, err := gfx.NewSDLGraphics(64, 32, 10)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("[ERROR] ", err)
 	}
 	defer gfx.Cleanup()
 
 	c.GFX = gfx
 
-	err = c.Load("roms/invaders.ch8")
+	err = c.Load("roms/pong.ch8")
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("[ERROR] ", err)
 	}
 
 	clock := time.NewTicker(time.Second / time.Duration(500))
@@ -47,7 +57,7 @@ func main() {
 			err := c.EmulateCycle()
 			if err != nil {
 				c.DiagDump()
-				log.Fatal(err)
+				log.Fatal("[ERROR] ", err)
 			}
 
 			//fmt.Printf("tick: oc:%04x pc:%x I:%02x, S:%x, r:%x\n", c.OpCode, c.PC-512, c.I, c.Stack, c.V)
@@ -75,7 +85,7 @@ func processEvents() bool {
 		switch event.(type) {
 		// switch case for when someone quits out of application
 		case *sdl.QuitEvent:
-			println("Quit") // not necessary
+			log.Println("[DEBUG] Quit") // not necessary
 			// decided with os.Exit since I was having issues when I just
 			//broke the game loop and window wasn't closing properly
 			os.Exit(0)

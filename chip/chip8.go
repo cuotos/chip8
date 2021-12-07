@@ -1,10 +1,11 @@
 package chip
 
 import (
-	"fmt"
-	"github.com/cuotos/chip8/gfx"
+	"log"
 	"math/rand"
 	"os"
+
+	"github.com/cuotos/chip8/gfx"
 )
 
 const (
@@ -97,7 +98,8 @@ func (c *Chip8) EmulateCycle() error {
 
 	// Fetch opcode
 	c.OpCode = uint16(c.Memory[c.PC])<<8 | uint16(c.Memory[c.PC+1])
-	fmt.Printf("oc:%04x pc:%x I:%02x\n", c.OpCode, c.PC, c.I)
+	log.Printf("[DEBUG] oc:%04x pc:%x I:%02x\n", c.OpCode, c.PC, c.I)
+	c.DiagDump()
 	err := c.HandleOpcode()
 	if err != nil {
 		return err
@@ -106,4 +108,4 @@ func (c *Chip8) EmulateCycle() error {
 	return nil
 }
 
-func (c *Chip8) SetKeys(){}
+func (c *Chip8) SetKeys() {}

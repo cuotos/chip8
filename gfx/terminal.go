@@ -8,6 +8,7 @@ const (
 	x = 64
 	y = 32
 )
+
 type Terminal struct {
 	Mem []uint16
 }
@@ -45,14 +46,12 @@ func (t *Terminal) Draw() {
 	fmt.Printf("\n")
 }
 
-func (t *Terminal) Clear(){
+func (t *Terminal) Clear() {
 	for _, i := range t.Mem {
 		t.Mem[i] = 0
 	}
 }
 
-func (t *Terminal) Initialise() (func(), error){
-	return func(){}, nil
+func (t *Terminal) Initialise() (func(), error) {
+	return func() {}, nil
 }
-
-

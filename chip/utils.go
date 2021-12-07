@@ -2,6 +2,7 @@ package chip
 
 import (
 	"fmt"
+	"log"
 )
 
 func (c *Chip8) DiagDump() {
@@ -9,7 +10,7 @@ func (c *Chip8) DiagDump() {
 	for i := 0; i < len(c.Memory); i += 16 {
 
 		if (i % 16) == 0 {
-			fmt.Printf("%08x: %02x%02x %02x%02x %02x%02x %02x%02x %02x%02x %02x%02x %02x%02x %02x%02x\n", i,
+			log.Printf("[DEBUG] %08x: %02x%02x %02x%02x %02x%02x %02x%02x %02x%02x %02x%02x %02x%02x %02x%02x\n", i,
 				c.Memory[i], c.Memory[i+1],
 				c.Memory[i+2], c.Memory[i+3],
 				c.Memory[i+4], c.Memory[i+5],
@@ -21,11 +22,11 @@ func (c *Chip8) DiagDump() {
 		}
 	}
 
-	fmt.Printf("PC: %04x\n", c.PC)
-	fmt.Printf("SP: %04x\n", c.SP)
-	fmt.Printf("Stck: %04x\n", c.Stack)
+	log.Printf("[DEBUG] PC: %04x\n", c.PC)
+	log.Printf("[DEBUG] SP: %04x\n", c.SP)
+	log.Printf("[DEBUG] Stck: %04x\n", c.Stack)
 
-	fmt.Printf("Rgst: %v\n", func() []string {
+	log.Printf("[DEBUG] Rgst: %v\n", func() []string {
 		output := []string{}
 		for i, r := range c.V {
 			output = append(output, fmt.Sprintf("%x:%04x", i, r))
